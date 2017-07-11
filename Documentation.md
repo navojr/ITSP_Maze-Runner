@@ -1,2 +1,2 @@
-#Maze Runners
-#Autonomous Maze Solving Bot
+# Maze Runners
+## Autonomous Maze Solving Bot
