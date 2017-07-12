@@ -6,7 +6,7 @@ The main objective of this project is to create a bot which should be able to ma
 Basically, this project uses Image Processing to detect the coloured tape(could be anything else) present on its path.The bot follows this tape till it encounters a node/junction.Depending on the type of node/junction encountered, it processes and stores the node in its memory(SD Card). In this manner it completes mapping the whole maze, storing all the nodal data. Finally, the shortest path betweeen any two nodes is determined.
 ### 2.Components Used
 1. Raspberry Pi-3 
-c
+[Raspberry Pi-3](https://downloads.flytbase.com/flytwebsite/2017/04/RASP_03_01.png)
 2. Camera Module 
 ![Raspberry Pi Camera Module V2](http://www.raspberrypi-spy.co.uk/wp-content/uploads/2016/04/raspberry_pi_camera_v2_rs.jpg)
 3. A4988 Motor Driver
@@ -21,8 +21,17 @@ c
 10. Jumper Wires
 11. Power Bank
 12. 16GB SD Card
-### 3. Concepts Used
+### 3. Concepts Used/Technical Aspects
 #### 3.1 Image Processing
+##### 3.1.1 Color format changing
+The color format is changed from RGB to HSV so as to specify the limits in the hue for detecting the color of the path
+##### 3.1.2 Color detection
+The lower and upper limit of Hue, Saturation and Value is specified for detecting the path in the image.
+##### 3.1.3 Morphological operations
+First morphological open is used to remove small noices in the background and then the kernal is changed so as to remove the horizontal or verticle rectangular strips to get only vertical and horizontal rectangular regions in the image in the
+##### 3.1.4 Contour Detection
+##### 3.1.5 Rectangle Detection
+##### 3.1.6 Junction Detection
 #### 3.2 Path Mapping
 #### 3.3 Shortest Path Algorithm
 ### 4.Problems Faced
@@ -34,5 +43,5 @@ Initially we had planned to use DC Motors, but then the calibration became an ar
 * The SD card formatter used for installing Raspbian can be found in this website:https://www.sdcard.org/downloads/formatter_4/
 * For python, the official documentations came in handy:
  1. https://docs.python.org/2.7/tutorial/index.html
- 2. http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_tutorials.html  
-
+ 2. http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_tutorials.html 
+* http://colorizer.org/
