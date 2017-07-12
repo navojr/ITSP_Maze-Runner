@@ -14,10 +14,10 @@ Raspberry Pi-3, Camera Module,  A4988Motor Driver, IC7805 Voltage Regulator, 12V
 #### 4.1 DC Motors
 Initially we had planned to use DC Motors, but then the calibration became an arduous task and it lead to huge offset and angle errors.So we resorted to Stepper Motors
 ### 5.Wesites Referred
-We referred to this website for OpenCV installation in Raspbian:http://www.pyimagesearch.com/2016/04/18/install-guide-raspberry-pi-3-raspbian-jessie-opencv-3/
-Raspbian OS can be easily found in the official Website:https://www.raspberrypi.org/downloads/raspbian/
-The SD card formatter used for installing Raspbian can be found in this website:https://www.sdcard.org/downloads/formatter_4/
-For python, the official documentations came in handy:
-                                                      https://docs.python.org/2.7/tutorial/index.html
-                                                      http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_tutorials.html  
+* We referred to this website for OpenCV installation in Raspbian:http://www.pyimagesearch.com/2016/04/18/install-guide-raspberry-pi-3-raspbian-jessie-opencv-3/
+* Raspbian OS can be easily found in the official Website:https://www.raspberrypi.org/downloads/raspbian/
+* The SD card formatter used for installing Raspbian can be found in this website:https://www.sdcard.org/downloads/formatter_4/
+* For python, the official documentations came in handy:
+ 1. https://docs.python.org/2.7/tutorial/index.html
+ 2. http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_tutorials.html  
 
