@@ -28,12 +28,22 @@ The color format is changed from RGB to HSV so as to specify the limits in the h
 ##### 3.1.2 Color detection
 The lower and upper limit of Hue, Saturation and Value is specified for detecting the path in the image.
 ##### 3.1.3 Morphological operations
-First morphological open is used to remove small noices in the background and then the kernal is changed so as to remove the horizontal or verticle rectangular strips to get only vertical and horizontal rectangular regions in the image in the
+First morphological open is used to remove small noices in the background and then the kernal is changed so as to remove the horizontal or verticle rectangular strips to get only vertical and horizontal rectangular regions respectively in the image.
 ##### 3.1.4 Contour Detection
+From the white rectangular patches contours are extracted and stored as arrays of points for each contour
 ##### 3.1.5 Rectangle Detection
+Rectangle fit is applied on the individual contours and are sorted in descending order with respect to the size.
 ##### 3.1.6 Junction Detection
+Different possible junctions:
+    1. L shaped juntion
+    2. T shaped junction
+    3. Plus shaped junction
+    4. No junction only straight line
+   These are detected by comparing the centers and the end points of the horiontal and vertical rectangles
 #### 3.2 Path Mapping
+The explored maze is stored as an array of structs containing the details about the co-ordinates and type of the nodes. The indices of the neighbouring junctions with which a particular node is connected is also stored in the structure of the node.
 #### 3.3 Shortest Path Algorithm
+Here we followed a bredth wise search for the shortest path between two points
 ### 4.Problems Faced
 #### 4.1 DC Motors
 Initially we had planned to use DC Motors, but then the calibration became an arduous task and it lead to huge offset and angle errors.So we resorted to Stepper Motors
