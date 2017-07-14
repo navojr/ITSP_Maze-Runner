@@ -6,7 +6,7 @@ The main objective of this project is to create a bot which should be able to ma
 Basically, this project uses Image Processing to detect the coloured tape(could be anything else) present on its path.The bot follows this tape till it encounters a node/junction.Depending on the type of node/junction encountered, it processes and stores the node in its memory(SD Card). In this manner it completes mapping the whole maze, storing all the nodal data. Finally, the shortest path betweeen any two nodes is determined.
 ### 2.Components Used
 1. Raspberry Pi-3 
-[Raspberry Pi-3](http://in.element14.com/productimages/standard/en_GB/2525225-40.jpg)
+![Raspberry Pi-3](http://in.element14.com/productimages/standard/en_GB/2525225-40.jpg)
 2. Camera Module 
 ![Raspberry Pi Camera Module V2](http://www.raspberrypi-spy.co.uk/wp-content/uploads/2016/04/raspberry_pi_camera_v2_rs.jpg)
 3. A4988 Motor Driver
