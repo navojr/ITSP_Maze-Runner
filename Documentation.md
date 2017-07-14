@@ -8,7 +8,7 @@ Basically, this project uses Image Processing to detect the coloured tape(could 
 1. Raspberry Pi-3 
 ![Raspberry Pi-3](http://in.element14.com/productimages/standard/en_GB/2525225-40.jpg)
 2. Camera Module 
-![Raspberry Pi Camera Module V2](http://www.raspberrypi-spy.co.uk/wp-content/uploads/2016/04/raspberry_pi_camera_v2_rs.jpg)
+
 3. A4988 Motor Driver
 ![A4988 Motor Driver](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkLpVTML2LAxSy4RvuzAwsdT9bMUmF2N4xOmSmA2vWPUEdvE3M)
 4. IC7805 Voltage Regulator
