@@ -45,7 +45,7 @@ Different possible junctions:
 #### 3.2 Path Mapping
 The explored maze is stored as an array of structs containing the details about the co-ordinates and type of the nodes. The indices of the neighbouring junctions with which a particular node is connected is also stored in the structure of the node.
 #### 3.3 Shortest Path Algorithm
-Here we followed a bredth wise search for the shortest path between two points
+Here. we followed a breadth wise search for the shortest path between two points
 ### 4.Problems Faced
 #### 4.1 DC Motors
 Initially we had planned to use DC Motors, but then the calibration part became an arduous task and it lead to huge offset and angle errors.So we resorted to Stepper Motors because of its accurate(upto 1.8 degrees) and quantized motion.
@@ -62,4 +62,8 @@ The Stepper Motors and its Motor Driver IC(A4988) are very sensitive and any mis
 * The below listed discussion forums came in handy too(for debugging):
  1.https://raspberrypi.stackexchange.com/
  2.https://stackoverflow.com/
-*
+### 6. Further Improvements
+The above project can be improved in many ways
+* The maze mapping and solving algoritm which we have used is not optimized. There are better algorithms like Dijkstra's Algorithm and    A * Algorithm which can be used.
+* Incorporating Machine Learning(ML)
+* This bot can be further upgraded to map a whole area using image stitching techniques.
