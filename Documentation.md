@@ -19,8 +19,10 @@ Basically, this project uses Image Processing to detect the coloured tape(could 
 8. Wheels(x2)
 9. Castor Wheel
 10. Jumper Wires
+11. Insulation Tape
 11. Power Bank
 12. 16GB SD Card
+* Note: We ordered the Raspberry Pi and the Camera Module online(Amazon).Rest of the components were available in Mangaldeep.
 ### 3. Concepts Used/Technical Aspects
 #### 3.1 Image Processing
 ##### 3.1.1 Color format changing
@@ -46,12 +48,18 @@ The explored maze is stored as an array of structs containing the details about 
 Here we followed a bredth wise search for the shortest path between two points
 ### 4.Problems Faced
 #### 4.1 DC Motors
-Initially we had planned to use DC Motors, but then the calibration became an arduous task and it lead to huge offset and angle errors.So we resorted to Stepper Motors
+Initially we had planned to use DC Motors, but then the calibration part became an arduous task and it lead to huge offset and angle errors.So we resorted to Stepper Motors because of its accurate(upto 1.8 degrees) and quantized motion.
+#### 4.2 Stepper Motors
+The Stepper Motors and its Motor Driver IC(A4988) are very sensitive and any mistake could fry the IC.Further, the Stepper Motors were over-draining our battery, so we finally gave the voltage through a regulated DC power supply.
 ### 5.Wesites Referred
 * We referred to this website for OpenCV installation in Raspbian:http://www.pyimagesearch.com/2016/04/18/install-guide-raspberry-pi-3-raspbian-jessie-opencv-3/
 * Raspbian OS can be easily found in the official Website:https://www.raspberrypi.org/downloads/raspbian/
-* The SD card formatter used for installing Raspbian can be found in this website:https://www.sdcard.org/downloads/formatter_4/
+* The SD card formatter(software) used for installing Raspbian can be found in this website:https://www.sdcard.org/downloads/formatter_4/
 * For python, the official documentations came in handy:
  1. https://docs.python.org/2.7/tutorial/index.html
  2. http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_tutorials.html 
-* http://colorizer.org/
+* This website was used for determining/adjusting HSV values: http://colorizer.org/
+* The below listed discussion forums came in handy too(for debugging):
+ 1.https://raspberrypi.stackexchange.com/
+ 2.https://stackoverflow.com/
+*
