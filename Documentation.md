@@ -26,11 +26,11 @@ Basically, this project uses Image Processing to detect the coloured tape(could 
 ### 3. Concepts Used/Technical Aspects
 #### 3.1 Image Processing
 ##### 3.1.1 Color format changing
-The color format is changed from RGB to HSV so as to specify the limits in the hue for detecting the color of the path
+The color format is changed from RGB to HSV so as to specify the limits in the hue for detecting the color of the path.
 ##### 3.1.2 Color detection
 The lower and upper limit of Hue, Saturation and Value is specified for detecting the path in the image.
 ##### 3.1.3 Morphological operations
-First morphological open is used to remove small noices in the background and then the kernal is changed so as to remove the horizontal or verticle rectangular strips to get only vertical and horizontal rectangular regions respectively in the image.
+First, morphological open is used to remove small noices in the background and then the kernal is changed so as to remove the horizontal or verticle rectangular strips to get only vertical and horizontal rectangular regions respectively in the image.
 ##### 3.1.4 Contour Detection
 From the white rectangular patches contours are extracted and stored as arrays of points for each contour
 ##### 3.1.5 Rectangle Detection
@@ -41,11 +41,11 @@ Different possible junctions:
     2. T shaped junction
     3. Plus shaped junction
     4. No junction only straight line
-   These are detected by comparing the centers and the end points of the horiontal and vertical rectangles
+   These are detected by comparing the centers and the end points of the horiontal and vertical rectangles.
 #### 3.2 Path Mapping
-The explored maze is stored as an array of structs containing the details about the co-ordinates and type of the nodes. The indices of the neighbouring junctions with which a particular node is connected is also stored in the structure of the node.
+The explored maze is then stored as an array of structs containing the details about the co-ordinates and type of the nodes(junctions). The indices of the neighbouring junctions with which a particular node is connected is also stored in the structure of the node.
 #### 3.3 Shortest Path Algorithm
-Here. we followed a breadth wise search for the shortest path between two points
+Here, we followed a breadth wise search method for determining the shortest path between two nodes.
 ### 4.Problems Faced
 #### 4.1 DC Motors
 Initially we had planned to use DC Motors, but then the calibration part became an arduous task and it lead to huge offset and angle errors.So we resorted to Stepper Motors because of its accurate(upto 1.8 degrees) and quantized motion.
@@ -55,6 +55,7 @@ The Stepper Motors and its Motor Driver IC(A4988) are very sensitive and any mis
 * We referred to this website for OpenCV installation in Raspbian:http://www.pyimagesearch.com/2016/04/18/install-guide-raspberry-pi-3-raspbian-jessie-opencv-3/
 * Raspbian OS can be easily found in the official Website:https://www.raspberrypi.org/downloads/raspbian/
 * The SD card formatter(software) used for installing Raspbian can be found in this website:https://www.sdcard.org/downloads/formatter_4/
+* We used this website to make the Stepper motor circuit: http://howtomechatronics.com/tutorials/arduino/how-to-control-stepper-motor-with-a4988-driver-and-arduino/
 * For python, the official documentations came in handy:
  1. https://docs.python.org/2.7/tutorial/index.html
  2. http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_tutorials.html 
@@ -65,5 +66,5 @@ The Stepper Motors and its Motor Driver IC(A4988) are very sensitive and any mis
 ### 6. Further Improvements
 The above project can be improved in many ways
 * The maze mapping and solving algoritm which we have used is not optimized. There are better algorithms like Dijkstra's Algorithm and    A * Algorithm which can be used.
-* Incorporating Machine Learning(ML)
+* Incorporating Machine Learning(ML).
 * This bot can be further upgraded to map a whole area using image stitching techniques.
