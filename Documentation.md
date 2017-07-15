@@ -61,8 +61,8 @@ The Stepper Motors and its Motor Driver IC(A4988) are very sensitive and any mis
  2. http://docs.opencv.org/3.0-beta/doc/py_tutorials/py_tutorials.html 
 * This website was used for determining/adjusting HSV values: http://colorizer.org/
 * The below listed discussion forums came in handy too(for debugging):
- 1.https://raspberrypi.stackexchange.com/
- 2.https://stackoverflow.com/
+ 1. https://raspberrypi.stackexchange.com/
+ 2. https://stackoverflow.com/
 ### 6. Further Improvements
 The above project can be improved in many ways
 * The maze mapping and solving algoritm which we have used is not optimized. There are better algorithms like Dijkstra's Algorithm and    A * Algorithm which can be used.
