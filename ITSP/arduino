@@ -1,0 +1,117 @@
+analog input pins
+digital pins
+0 - 5 volts
+reset button
+power led
+TX/RX leds
+atmega328p
+
+analog pins A0 to A5 with anaogRead(), analogWrite()
+digital pins gives 0 or 1 35 6 9 10 11 are pwm enabled pins
+pwm eg. 60% duty cycle
+power pins Vin
+
+pin 13 LED : high means glow and not in low
+power LED : connected to the power source
+reset button
+TX/RX LED : are to denote communication are connected to the 1st and 2nd pins used when using sensors
+usb port powers the arduino also to upload code
+Serial.println() prints on the serial monitor
+
+pinMode(Pin No, Mode); to set as input or output
+eg. pinMode(13,OUTPUT);
+usually written in the setup function
+digitalWrite(pin no, HIGH/LOW);
+HIgh sets to 5V and 0V at low.
+eg.
+    pinMode(13, INPUT);
+    digitalRead(13);
+
+analogWrite(...)
+analogRead(Pin_no); returns a 10 bit no. (0-1023)
+
+TIME
+delay(T), delayMicroseconds(T) where T is in milliseconds and microseconds respectively
+micros(), millis() returns time since the arduino board began running the program
+pulsein(Pin no, HIGH) gives the time in milliseconds from the time this command is initiated till Pin_no gives a HIGH pulse
+
+SERIAL
+used for serial ccommunication
+Serial.begin(speed)
+
+eg.
+                //headers for eg, servo
+int i=1;        //first variable declarations
+void setup()
+{
+Serial.begin(9600)
+}
+
+void loop()
+{
+    Serial.println(i++);
+    dekay(1000);
+}
+
+program flow -> first executes the setup()
+                and then starts the loop infinitely
+
+eg.
+11 -> red 5 sec
+12 -> orange 1.5 sec
+13 -> green 5 sec
+red,orange,green,orange,red,..
+
+setup()
+{
+    pinMode(11,OUTPUT);
+    pinMode(12,OUTPUT);
+    pinMode(13,OUTPUT);
+}
+loop()
+{
+    digitalWrite(11,HIGH);
+    delay(5000);
+    digitalWrite(11,LOW);
+    digitalWrite(12,HIGH);
+    delay(1500);
+    digitalWrite(12,LOW);
+    digitalWrite(13,HIGH);
+    delay(5000);
+    digitalWrite(13,LOW);
+    digitalWrite(12,HIGH);
+    delay(1500);
+    digitalWrite(12,LOW);
+}
+
+SENSORS
+
+ultrasonic
+one of the circles is a transmitter and the other is a receiver
+has 4 pins one is VCC-5V and the ground
+one is trig and the other is echo, trig will sends a pulse for 0 milliseconds
+
+LCD
+
+display certain info
+GND,VCC,V0, used to control the contrast of the display, RS registor select, read/write, enable pin only when enable is hig hthe data is printed, 8 pins
+D0-D7, anode, cathode; if anode high and cathode then can be used in the dark
+
+lcd.begin(16,2); defines the size
+lcd.clear(); clears the LCD
+lcd.setCursor(n,m): moves the cursor to that array
+LiquidCrystal lcd(12,,,,,);//(rs,en,d4,d5,d6,d7)
+
+INFRARED SENSORS
+
+TX signal RX
+
+BLUETOOTH MODULE
+
+key,VCC, grd, txd, rxd, state,
+serial.available()
+Serial.read()
+Serial.readString()
+Serial.print() Serial.pritln()
+
+GITTER.IM/STABIITB/ITSP/ IN CASE YOU ARE STUCK IN SOME PROBLEMS

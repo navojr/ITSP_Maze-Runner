@@ -1,0 +1,36 @@
+range h - 0 to 179
+    s - 0 to 255
+    v - 0 to 255
+
+The nodes will be detected and stored in a list and they will be structures
+with the Co-ordinates a flag to mark the type of the node and a list containing
+the indices of the nodes they are directly attached to.
+The nodes can be
+1. left or right turn
+2. A T shaped junction
+3. A plus shaped junction
+
+After mapping the mae will be stored as an array of structures(for representing
+the nodes).
+
+For finding the shortest path a bredth wise exploration of the map will be made
+either from the starting or the final node(may also include non-node points)
+    It will be taken care that there is no looping the search
+        for that a list of explored indices has to be stored
+    It has to be taken care that the bredth wise exploration takes care of the
+    length of the path covered and not just the no. of nodes for that the path
+    covered should also be stored or taken care of
+
+For moving the maze
+    1. first angle correction through vision
+    2. offset correction through vision
+    3. any motion has to account for the offset between the center of the image
+        and the center of the two wheels
+
+Lower level:
+    1. Vision:
+        funcyion to detect the nodes and return the orientation and postion in
+        the image
+
+    2. angular motion from the motors
+    3. lateral displacement from the motors

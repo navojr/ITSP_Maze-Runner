@@ -1,0 +1,68 @@
+1st review meet at around 9th or 10th
+
+use github, gitter
+
+documentation, bills, completion of project FOR REIMBERSEMENT
+
+etcher
+follow steps from the raspberry site to install the necessary software
+go and change the keyboard settings mouse and keyboard sett. keyboard layout.
+softwares similar to that of ubuntu
+through ssh we can go into that rasp and do all the work
+
+vnc helps to show the screen of r-py through net
+
+HOW TO CONNECT THE RPY TO WIFI WITHOUT BOOTING
+all the the passwords are stored
+go to tutorials stab rasp and go to the configuration section and the wifi
+
+enable ssh
+
+raspberry.local
+in case static IP has to be placed then some more files has to be changed
+can use putty as the terminal for windows and mac
+eg
+ssh pi@raspberrypi.local here the it is username@hostname
+there a green light blinks if it gets booted correctly
+we should install real VNC on pc
+
+GPIO
+the digital and the analog in and out ping for the gpio.
+there a python module to use the gpio called py.gpio
+sudo install pythonrpy.gpio see the gpio section the tutorials in the stab website
+
+eg 
+Import RPi.GPIO as GPIO
+import time
+GPIO.setmode(GPIO.BCM) the broadcom processor it is the standard and the method s the board nomeclature for naming the pins
+GPIO.setup(4, GPIO.OUT)
+
+blue = 2
+green = 3
+red = 4
+
+GPIO.setup(blue, GPIO.OUT)
+GPIO.setup(blue, GPIO.OUT)
+GPIO.setup(blue, GPIO.OUT)
+
+try:
+    while True:
+            GPIO.ouput(4, GPIO.HIGH)
+            time.sleep(1)
+            GPIO.output(4, GPOI.LOW)
+            time.sleep(1)
+except keyboardInterrupt:
+        GPIO.cleanup() ;makes all the pins low
+
+can use simple http server
+sudo apt install python-simpleHTTPserver
+nano indent.html ;nanno is a text editor
+SimpleHTTPserver 80 here 80 is some port no.
+we can make a webpage having the controls and serving of the camera
+can use flask or jango
+cd /etc/
+nano .ssh for starting the program automatically on ssh
+add 
+python /home/pi/Desktop/gpio.py
+
+there will be a tutorial to install the opencv in rpy.
