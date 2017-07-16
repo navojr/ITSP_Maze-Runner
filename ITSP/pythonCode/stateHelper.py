@@ -4,19 +4,18 @@ from detection import *
 from ex2 import *
 import math
 from lineFollower import *
-from stateHelper import *
-from solver import *
-"""
+import copy
+
 stepLen = 532
 
 class junction:
-    """""" pass jType_ as -2 and parent as -1 if it is origin
+    """ pass jType_ as -2 and parent as -1 if it is origin
         jType:
         -1 for origin
         0 for dead end
         1 to 4 L : 1 1st quadrant ....
         5 to 8 T : 5 -> Right 6 -> Up 7 -> Left 8 -> Down
-        9 + """"""
+        9 + """
     def __init__(self, jType_, angle, cordi, parent_):
         self.jType = self.findJuncGlobal(jType_, angle)
         self.cordi = [cordi[0], cordi[1]]
@@ -67,10 +66,13 @@ class junction:
                 A = ang - 90
             return 5 + self.helpFindJ(A % 360)
     def addNeigh(self, n):
+        print("In addNeigh n is", n)
+        print("length of connect", len(self.connect))
+        print("jType", self.jType)
         if n == -1:
             self.parent = n
         else:
-            if len(self.connect) == 0:
+            if len(self.connect) == 0 and self.jType != -1:
                 self.parent = n
             else:
                 pass
@@ -82,27 +84,27 @@ def moveTillJunc():
     while True:
         im_ = captureImg()
         ang_ = getAngle(im_.copy())
-        print("angle", ang_)
+#        print("angle", ang_)
         while math.fabs(ang_) > 6:
             correctAngle(ang_)
-            print("angle", ang_)
+#            print("angle", ang_)
             im_ = captureImg()
             ang_ = getAngle(im_.copy())
 
  #       im = captureImg()
         off_ = getOffset(im_.copy())
-        print("off", off_)
+#        print("off", off_)
 
         while math.fabs(off_) > 170:
             correctOffset(off_)
-            print("off", off_)
+#            print("off", off_)
             im_ = captureImg()
             ang_ = getAngle(im_.copy())
-            print("angle", ang_)
+#            print("angle", ang_)
 
             while math.fabs(ang_) > 6:
                 correctAngle(ang_)
-                print("angle", ang_)
+#                print("angle", ang_)
                 im_ = captureImg()
                 ang_ = getAngle(im_.copy())
             off_ = getOffset(im_.copy())
@@ -114,8 +116,13 @@ def moveTillJunc():
             count_ += 1
         else:
             print("junc", xJ_)
-            if xJ_[1][1] < -100:
+            if xJ_[1][1] < -210:
+                moveForward(stepLen/2.3)
+                count_ += 1
+            elif xJ_[1][1] < -100:
                 moveForward(120) #to be tuned
+            elif xJ_[1][1] > 140:
+                moveForward(120, True)
             else:
                 return [int(count_ / 2), xJ_]
 
@@ -139,12 +146,16 @@ class MaP:
             else:
                 return 0
     def moveParent(self, n):
+        print("@@@@@@@@@@@@@@@In moveParent the n and parent = ", n, self.lis[n].parent)
         if self.lis[n].parent == -1:
+            print("In moveParent returning -1")
             return -1
         else:
+            print("@@@@@@@@@@@@@@@@@ In moave Parent index and parent index", n, self.lis[n].parent)
             dest = self.lis[n].parent
             self.moveNeighbour(n, dest)
             self.prev = dest
+            self.presCordi = copy.deepcopy(self.lis[dest].cordi)
             return 0
 
     def updateCordi(self, dis):
@@ -159,7 +170,7 @@ class MaP:
             self.presCordi[1] -= dis
         else:
             print("ANGLE OUT RANGE")
-        print("Final codi in updateCordi", self.presCordi)
+        print("Final codi in updateCordi", copy.deepcopy(self.presCordi))
 
     def moveNeighbour(self, ini, fin):
 #        if self.lis[n].parent == -1
@@ -167,24 +178,26 @@ class MaP:
 #        else:
 #            dest = self.lis[self.lis[n].parent]
 #            self.prev = dest
-        AnG = self.calcGlobalAngle(self.lis[ini].cordi, self.lis[fin].cordi)
+        AnG = self.calcGlobalAngle(copy.deepcopy(self.lis[ini].cordi), copy.deepcopy(self.lis[fin].cordi))
         turnAnG = AnG - self.angle
         turnAnG %= 360
         if turnAnG == 0:
             moveForward(stepLen)
         elif turnAnG == 90:
-            moveForward(stepLen)
+            moveForward(450)
             cv2.waitKey(500)
             turnleft_90()
             self.angle += 90
             self.angle %= 360
 #            moveForward()
         elif turnAnG == 180:
+            moveForward(470)
             turn_180() # TODO offset to be tuned
+            moveForward(stepLen)
             self.angle += 180
             self.angle %= 360
         elif turnAnG == 270:
-            moveForward()
+            moveForward(450)
             cv2.waitKey(500)
 #            moveForward()
             turnright_90()
@@ -193,15 +206,17 @@ class MaP:
 #            moveForward()
 
         mParent = moveTillJunc()
-        self.updateCordi(mParent[0] + 1)
+#        self.updateCordi(mParent[0] + 1)
+        self.presCordi = copy.deepcopy(self.lis[fin].cordi)
+        self.prev = fin
 
     def explore(self, n):
-        """ """
+        """
         returns 7 when completely explored
         returns 1 in case loop anf returns to the same junc
         returns -7 dead end
         returns 0 for origin or common node
-        """ """
+        """
         jType = self.lis[n].jType
         print("jType in explore", jType)
         print("lis", self.lis)
@@ -224,7 +239,7 @@ class MaP:
                 return -7
             else:
                 self.prev == n
-                Pang = self.calcGlobalAngle(self.lis[n].cordi, self.lis[self.lis[n].parent].cordi)
+                Pang = self.calcGlobalAngle(copy.deepcopy(self.lis[n].cordi), copy.deepcopy(self.lis[self.lis[n].parent].cordi))
                 print("Parent index", self.lis[n].parent)
                 print("Parent cordi", self.lis[self.lis[n].parent].cordi)
                 print("Junc cordi", self.lis[n].cordi)
@@ -246,7 +261,7 @@ class MaP:
                             TryAng += 90
                             TryAng %= 360
                     else:
-                        neighAng = self.calcGlobalAngle(self.lis[n].cordi, self.lis[self.lis[n].connect[1]].cordi)
+                        neighAng = self.calcGlobalAngle(copy.deepcopy(self.lis[n].cordi), copy.deepcopy(self.lis[self.lis[n].connect[1]].cordi))
                         TryAng = ((jType - 6) * 90) % 360
                         if (TryAng == Pang) or (TryAng == neighAng):
                             TryAng += 90
@@ -259,7 +274,7 @@ class MaP:
                 else:
                     angArray = []
                     for neighs in self.lis[n].connect:
-                        angang = self.calcGlobalAngle(self.lis[n].cordi, self.lis[neighs].cordi)
+                        angang = self.calcGlobalAngle(copy.deepcopy(self.lis[n].cordi), copy.deepcopy(self.lis[neighs].cordi))
                         angArray.append(angang)
                     TryAng = 0
                     while True:
@@ -272,7 +287,7 @@ class MaP:
                     turnAng = TryAng - self.angle
                 turnAng %= 360
 #                moveForward()
-                moveForward(stepLen)
+                moveForward(450)
                 print("Final value of turnAng", turnAng)
                 cv2.waitKey(500)
                 if turnAng == 90:
@@ -283,6 +298,7 @@ class MaP:
                     self.angle -= 90
                 elif turnAng == 180:
                     turn_180()
+                    moveForward(stepLen)
                     self.angle += 180
                 else:
                     print("turning 0 degrees")
@@ -290,7 +306,7 @@ class MaP:
 #                moveForward()
                 newJ = moveTillJunc()
                 self.updateCordi(newJ[0] + 1)
-                NewJunction = junction(newJ[1][0], self.angle, self.presCordi, n)
+                NewJunction = junction(newJ[1][0], self.angle, copy.deepcopy(self.presCordi), n)
                 cordiList = map(lambda x: x.cordi, self.lis)
 #                if NewJunction.cordi == (0,0):
 #                if (NewJunction in self.lis):
@@ -298,22 +314,28 @@ class MaP:
                 print("NewJuncionCordi", NewJunction.cordi)
                 if (NewJunction.cordi in cordiList):
                     encPos = 0
+                    cordiList = map(lambda x: x.cordi, self.lis)
 #                    for pos, NewJu in enumerate(self.lis):
                     for pos, NewJu in enumerate(cordiList):
 #                        if NewJu == NewJunction:
-                        if NewJu == NewJunction.codi:
-                            encPos = Pos
+                        print("NewJu and NewJunction cordi and pos", NewJu, NewJunction.cordi, pos)
+                        if NewJu == NewJunction.cordi:
+                            encPos = pos
                             break
                         else:
                             pass
                     self.lis[encPos].addNeigh(n)
+                    print("linking old", encPos, "with", n)
+                    print("length of old connect", len(self.lis[encPos].connect))
                     self.lis[n].addNeigh(encPos)
+                    print("linking new")
+                    print("length of new connect", len(self.lis[n].connect))
                     moveForward(stepLen)
                     turn_180()
                     self.angle += 180
                     self.angle %= 360
                     oldJ = moveTillJunc()
-                    self.presCordi = self.lis[n].cordi
+                    self.presCordi = copy.deepcopy(self.lis[n].cordi)
                     return 1 #for loop
                 else:
                     self.lis.append(NewJunction)
@@ -326,14 +348,12 @@ class MaP:
 if __name__ == "__main__":
     startCam()
     MapObject = MaP()
-    print("Parent of Origin", MapObject.lis[0].parent)
     while True:
         print("Entering loop in main")
         exOut = MapObject.explore(MapObject.prev)
         print("After calling explore in main angle", MapObject.angle)
-        print("Parent of Origin", MapObject.lis[0].parent)
         if exOut == 7 or exOut == -7:
-            print('a dead end or a node with all explored paths encountered and prev is ====', MapObject.prev)
+            print('a dead end or a node with all explored paths encountered')
             pare = MapObject.moveParent(MapObject.prev)
             print('Index of parent from main', pare)
             if pare == -1:
@@ -342,6 +362,4 @@ if __name__ == "__main__":
                 pass
         else:
             pass
-    solverObject = solver(MapObject)
-    solverObject.moveShortest(0,13)
-    stopCam()
+    stopCam()"""

@@ -1,217 +1,120 @@
 import RPi.GPIO as GPIO
 from time import sleep
-""" 
-GPIO.setmode(GPIO.BCM)
- 
-Motor1A = 17
-Motor1B = 23
-Motor2A = 27
-Motor2B = 22
- 
-GPIO.setup(Motor1A,GPIO.OUT)
-GPIO.setup(Motor1B,GPIO.OUT)
-GPIO.setup(Motor2A,GPIO.OUT)
-GPIO.setup(Motor2B,GPIO.OUT)
-"""
-def pwm(y, one, two, t, smooth = True):
+import sys
+import math
+
+
+
+
+dfactor = 15.2
+afactor = 1.99
+
+lfactor = 1
+ldfactor = 1
+
+sleepTime =0.005
+#m1_rightmtr m2_leftmtr True_fwd False_bwd
+def move(m1,m2,d1,d2,ang):
+
     GPIO.setmode(GPIO.BCM)
- 
-    Motor1A = 17
-    Motor1B = 23
-    Motor2A = 27
-    Motor2B = 22
- 
-    GPIO.setup(Motor1A,GPIO.OUT)
-    GPIO.setup(Motor1B,GPIO.OUT)
-    GPIO.setup(Motor2A,GPIO.OUT)
-    GPIO.setup(Motor2B,GPIO.OUT)
-    if one:
-        m1a = Motor1A
-        m1b = Motor1B
+    direcPin1 = 22
+    direcPin2 = 17
+    stepPin1 = 23
+    stepPin2 = 27
+
+    GPIO.setup(stepPin1,GPIO.OUT)
+    GPIO.setup(stepPin2,GPIO.OUT)
+
+    GPIO.setup(direcPin1,GPIO.OUT)
+    GPIO.setup(direcPin2,GPIO.OUT)
+
+    if(d1):
+        GPIO.output(direcPin1,GPIO.HIGH)
     else:
-        m1b = Motor1A
-        m1a = Motor1B
-    if two:
-        m2a = Motor2A
-        m2b = Motor2B
+        GPIO.output(direcPin1,GPIO.LOW)
+    if(d2):
+        GPIO.output(direcPin2,GPIO.HIGH)
     else:
-        m2b = Motor2A
-        m2a = Motor2B
-    i = 0
-    if smooth:
-        y /= 100
-        x = 0.1
+        GPIO.output(direcPin2,GPIO.LOW)
+    steps = (int)(ang/1.8)
+    for i in range (0,steps):
+        if(m1):
+            GPIO.output(stepPin1,GPIO.HIGH)
+        if(m2):
+            GPIO.output(stepPin2,GPIO.HIGH)
+        sleep(sleepTime)
+        if(m1):
+            GPIO.output(stepPin1,GPIO.LOW)
+        if(m2):
+            GPIO.output(stepPin2,GPIO.LOW)
+        sleep(sleepTime)
+
+def moveOne(m,dist,direc):
+    angle = dfactor * dist
+    if(m and direc):
+        move(True,False,True,False,angle)
+    elif(m and (not direc)):
+        move(True,False,False,False,angle)
+    elif((not m) and direc):
+        move(False,True,False,True,angle)
     else:
-        y /= 100
-        x = y
-    while i < t:
-        GPIO.output(m1a,GPIO.HIGH)
-        GPIO.output(m1b,GPIO.LOW)
-        GPIO.output(m2a,GPIO.LOW)
-        GPIO.output(m2b,GPIO.HIGH)
-        sleep(x * 0.01)
-        GPIO.output(m1a,GPIO.LOW)
-        GPIO.output(m1b,GPIO.LOW)
-        GPIO.output(m2a,GPIO.LOW)
-        GPIO.output(m2b,GPIO.LOW)
-        sleep(0.01*(1 - x))
-        i += 1
-        if smooth:
-            if x < y:
-                x += 0.005
-    GPIO.cleanup()
+        move(False,True,False,False,angle)
 
-def single_pwm(pwm,motor_bool,dir,time):
-    GPIO.setmode(GPIO.BCM)
- 
-    Motor1A = 17
-    Motor1B = 23
-    Motor2A = 27
-    Motor2B = 22
- 
-    GPIO.setup(Motor1A,GPIO.OUT)
-    GPIO.setup(Motor1B,GPIO.OUT)
-    GPIO.setup(Motor2A,GPIO.OUT)
-    GPIO.setup(Motor2B,GPIO.OUT)
-    if motor_bool:
-        if dir:
-            ma = Motor1A
-            mb = Motor1B
-        else:
-            ma = Motor1B
-            mb = Motor1A
+
+def forward(dist,reverse=False):
+    angle = dfactor * dist
+    if(not reverse):
+        move(True,True,True,True,angle)
     else:
-        if dir:
-            mb = Motor2A
-            ma = Motor2B
-        else:
-            mb = Motor2B
-            ma = Motor2A
-    pwm /= 100
-    i=0
-    while i < time:
-        GPIO.output(ma,GPIO.HIGH)
-        GPIO.output(mb,GPIO.LOW)
-        sleep(pwm*0.01)
-        GPIO.output(ma,GPIO.LOW)
-        GPIO.output(mb,GPIO.LOW)
-        sleep(0.01*(1 - pwm))
-        i+=1
-    GPIO.cleanup()
+        move(True,True,False,False,angle)
 
+def turn(turnAngle,direc):
+	angle = afactor * turnAngle
+	if(direc):
+		move(True,True,True,False,angle)
+	else:
+		move(True,True,False,True,angle)
 
-    
-
-
-
-def go_right_laterally(offset):
-   # offset=(int) offset
-    offset *= 100
-    num = (int)(offset/86)
-    i=0
-    while i < num:
-        single_pwm(35,True,False,38)
+def moveLaterally(dist,direc):
+    d = lfactor*14.7*(math.acos(1-dist/14.7))
+    distance = 14.7*math.sin(d/14.7)
+    if(direc):
+        moveOne(True,d,False)
         sleep(0.2)
-        single_pwm(35,False,False,47)
+        moveOne(False,d,False)
         sleep(0.2)
-        pwm(30,True,True,64,False)
-        i+=1
-        sleep(0.25)
+        forward(distance)
+    else:
+        moveOne(False,d,False)
+        sleep(0.2)
+        moveOne(True,d,False)
+        sleep(0.2)
+        forward(distance)
 
 def go_left_laterally(offset):
-    #offset = (int) offset
-    offset *= 100
-    num = (int)(offset/78)
-    i=0
-    while i < num:
-        single_pwm(35,False,False,36)
-        sleep(0.2)
-        single_pwm(35,True,False,37)
-        sleep(0.2)
-        pwm(30,True,True,70,True)
-        i+=1
-        sleep(0.25)
-def forward(dist):
-    time=dist/22.0
-    pwm(50,True,True,time*100,False)
-
-#pwm(40,True,True,100,False)
-
-def turn_right(angle):
-    rem = angle%10
-    if(rem<=5 ):
-        num = (int)(angle/10)
-        
-    else:
-
-        num = (angle/10)+1
-
-        if (angle<10.0 and angle > 6.0):
-            num = 1
-    i=0
-    while i < num:
-        pwm(25,True,False,25,False)
-        i+=1
-        sleep(1)
-
-def turn_left(angle):
-    rem = angle % 10
-    if(rem<=5 ):
-        num = (int)(angle/10)
-    else:
-        num = (angle/10)+1
-
-        if (angle<10.0 and angle > 6.0):
-            num = 1
-    i=0
-    while i < num:
-        pwm(25,False,True,22,False)
-        i+=1
-        sleep(1)
-
-def turnright_90():
-        num=9
-        i=0
-        while i < num:
-             pwm(50,True,False,4.1,False)
-             i+=1
-
-  
+    moveLaterally(offset,True)
+def go_right_laterally(offset):
+    moveLaterally(offset,False)
 def turnleft_90():
-    num = 9
-    i=0
-
-    while i < num:
-         pwm(50,False,True,4.9,False)
-         i+=1
+    turn(90,True)
+def turnright_90():
+    turn(90,False)
 def turn_180():
-    turnright_90()
-    sleep(1)
-    turnright_90()
+    turn(180,True)
+def turn_right(angle):
+    turn(angle,False)
+def turn_left(angle):
+    turn(angle,True)
 
-#forward(8.7)
+#moveLaterally(2,True)
+#moveOne(False,7,False)
+#moveLaterally(1,True)
+#turn(90,False)
+#forward(5, True)
+#forward(7.5)
+#sleep(1)
 #turn_180()
-#forward(8.7)
-#turn_left(90)
+#forward(8)
+#moveOne(True,360,False)
+GPIO.cleanup()
 
-#go_left_laterally(2.00)
-#go_right_laterally(2.00)
-#forward(30)
-#turn_left(90)
-#forward(30)
-#pwm(45,True,True,300,False)
-
-"""
-pwm(40, True, Te)
-ue, 275)
-pwm(50, False, True, 130, False)
-pwm(40, True, True, 200)
-pwm(50, False, True, 130, False)
-"""
-"""
-GPIO.output(Motor1A,GPIO.HIGH)
-GPIO.output(Motor1B,GPIO.LOW)
-GPIO.output(Motor2A,GPIO.LOW)
-GPIO.output(Motor2B,GPIO.HIGH)
-sleep(2)"""
-#GPIO.cleanup()

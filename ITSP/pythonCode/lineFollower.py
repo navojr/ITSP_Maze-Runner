@@ -38,23 +38,23 @@ def correctAngle(ang):
             pwm(50, False, True, t, False)"""
 
 def correctAngle(ang):
-    print("angle correction", ang)
+#    print("angle correction", ang)
     if ang > 0:
         turn_right(ang)
     else:
         turn_left(-ang)
 
-def moveForward(dist = 300):
+def moveForward(dist = 450, back = False):
     dist = dist * 7 / 420
     print("moving", dist)
     if dist > 0:
-        forward(dist)
+        forward(dist, back)
     else:
         print("cannot move Backward now")
 
 def correctOffset(dis):
     dis = dis * 11 / 720
-    print("offset correction", dis)
+#    print("offset correction", dis)
     if dis > 0:
         go_right_laterally(1)
     else:
@@ -68,7 +68,7 @@ if __name__ == "__main__":
         ang = getAngle(im.copy())
         print("angle", ang)
 
-        while math.fabs(ang) > 6:
+        while math.fabs(ang) > 3:
             correctAngle(ang)
             im = captureImg()
             ang = getAngle(im.copy())
@@ -85,7 +85,7 @@ if __name__ == "__main__":
             ang = getAngle(im.copy())
             print("angle", ang)
 
-            while math.fabs(ang) > 6:
+            while math.fabs(ang) > 3:
                 correctAngle(ang)
                 print("angle", ang)
                 im = captureImg()
@@ -95,7 +95,7 @@ if __name__ == "__main__":
 #        im = captureImg()
         ang = getAngle(im.copy())
         print("angle", ang)
-        while math.fabs(ang) > 6:
+        while math.fabs(ang) > 3:
             correctAngle(ang)
             print("angle", ang)
             im = captureImg()
@@ -113,16 +113,18 @@ if __name__ == "__main__":
         elif junc == 0:
             moveForward(300)
         elif xJ[1][1] < -100:
-            moveForward(75)
+            moveForward(-xJ[1][1])
         else:
             if (junc == 1) or (junc == 3):
+#                moveForward()
                 moveForward()
-                moveForward()
+                cv2.waitKey(1500)
                 turnleft_90()
-                moveForward()
+#                moveForward()
             else:
+#                moveForward()
                 moveForward()
-                moveForward()
+                cv2.waitKey(1500)
                 turnright_90()
-                moveForward()
+#                moveForward()
     stopCam()

@@ -12,7 +12,7 @@ def getRegion(img):
     hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
     h, s, v = cv2.split(hsv)
-    print("vmin:", np.amin(v), "vmax", np.amax(v))
+#    print("vmin:", np.amin(v), "vmax", np.amax(v))
 
     lower_color = np.array([0, 90, 30])
     upper_color = np.array([20, 255, 255])
